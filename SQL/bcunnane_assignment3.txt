@@ -1,0 +1,270 @@
+mysql> source C:\Users\Brandon\Google Drive\cs\CS31A\3\bcunnane_assignment3.sql
+--------------
+/* Assignment3.sql 
+   BRANDON CUNNANE
+   CS 31A, Summer 2022
+*/
+
+/* Set Database. Remove tables if already existing */
+USE bank
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+DROP TABLE IF EXISTS global_locations
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+--------------
+DROP TABLE IF EXISTS global_locations_backup
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+--------------
+DROP TABLE IF EXISTS employee_pay
+--------------
+
+Query OK, 0 rows affected (0.04 sec)
+
+--------------
+/* Question 1: create global_locations table */
+CREATE TABLE global_locations (
+	id INT(4),
+    loc_name VARCHAR(20),
+    address VARCHAR(20),
+    city VARCHAR(20),
+    zip_postal_code VARCHAR(20),
+    phone VARCHAR(15),
+    email VARCHAR(15),
+    manager_id INT(4),
+    emergency_contact VARCHAR(20),
+    PRIMARY KEY (id),
+    UNIQUE (email)
+)
+--------------
+
+Query OK, 0 rows affected, 2 warnings (0.06 sec)
+
+--------------
+DESCRIBE global_locations
+--------------
+
++-------------------+-------------+------+-----+---------+-------+
+| Field             | Type        | Null | Key | Default | Extra |
++-------------------+-------------+------+-----+---------+-------+
+| id                | int         | NO   | PRI | NULL    |       |
+| loc_name          | varchar(20) | YES  |     | NULL    |       |
+| address           | varchar(20) | YES  |     | NULL    |       |
+| city              | varchar(20) | YES  |     | NULL    |       |
+| zip_postal_code   | varchar(20) | YES  |     | NULL    |       |
+| phone             | varchar(15) | YES  |     | NULL    |       |
+| email             | varchar(15) | YES  | UNI | NULL    |       |
+| manager_id        | int         | YES  |     | NULL    |       |
+| emergency_contact | varchar(20) | YES  |     | NULL    |       |
++-------------------+-------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+--------------
+/* Question 2: Alter the GLOBAL_LOCATIONS table to add a 
+column that stores the date of open location.*/
+ALTER TABLE global_locations
+ADD date_opened DATE
+--------------
+
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+--------------
+/* Question 3: Display column names and data types 
+for the GLOBAL_LOCATIONS table.*/
+DESCRIBE global_locations
+--------------
+
++-------------------+-------------+------+-----+---------+-------+
+| Field             | Type        | Null | Key | Default | Extra |
++-------------------+-------------+------+-----+---------+-------+
+| id                | int         | NO   | PRI | NULL    |       |
+| loc_name          | varchar(20) | YES  |     | NULL    |       |
+| address           | varchar(20) | YES  |     | NULL    |       |
+| city              | varchar(20) | YES  |     | NULL    |       |
+| zip_postal_code   | varchar(20) | YES  |     | NULL    |       |
+| phone             | varchar(15) | YES  |     | NULL    |       |
+| email             | varchar(15) | YES  | UNI | NULL    |       |
+| manager_id        | int         | YES  |     | NULL    |       |
+| emergency_contact | varchar(20) | YES  |     | NULL    |       |
+| date_opened       | date        | YES  |     | NULL    |       |
++-------------------+-------------+------+-----+---------+-------+
+10 rows in set (0.00 sec)
+
+--------------
+/* Question 4: Delete the date_opened column from the 
+GLOBAL_LOCATIONS table.*/
+ALTER TABLE global_locations
+DROP COLUMN date_opened
+--------------
+
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+--------------
+/* Question 5: Rename the GLOBAL_LOCATIONS table as 
+GLOBAL_LOCATIONS_BACKUP.*/
+ALTER TABLE global_locations
+RENAME TO GLOBAL_LOCATIONS_BACKUP
+--------------
+
+Query OK, 0 rows affected (0.03 sec)
+
+--------------
+/* Question 6: Using the column information for the EMPLOYEE_PAY
+table below, create the EMPLOYEE_PAY table. Write the syntax you 
+will use to create the table. */
+CREATE TABLE employee_pay (
+	employee_id INT,
+    ssn VARCHAR(11),
+    salary INT NOT NULL,
+    hire_date DATE NOT NULL,
+    PRIMARY KEY (employee_id),
+    UNIQUE (ssn)
+)
+--------------
+
+Query OK, 0 rows affected (0.06 sec)
+
+--------------
+/* Question 7: Enter one row into the table. Execute a SELECT * 
+statement to verify your input. Refer to the graphic below for input.*/
+INSERT INTO employee_pay
+VALUES (184167702, '744-04-9444', 5500, '2011-03-15')
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+
+--------------
+SELECT *
+FROM employee_pay
+--------------
+
++-------------+-------------+--------+------------+
+| employee_id | ssn         | salary | hire_date  |
++-------------+-------------+--------+------------+
+|   184167702 | 744-04-9444 |   5500 | 2011-03-15 |
++-------------+-------------+--------+------------+
+1 row in set (0.00 sec)
+
+--------------
+/* Question 8: Display the names of the tables in current database.*/
+SHOW tables
+--------------
+
++-------------------------+
+| Tables_in_bank          |
++-------------------------+
+| account_trans           |
+| account_type            |
+| accounts                |
+| agent                   |
+| branch                  |
+| business_client         |
+| category                |
+| clients                 |
+| department              |
+| employee                |
+| employee_pay            |
+| global_locations_backup |
+| individual_client       |
+| jobs                    |
+| location                |
++-------------------------+
+15 rows in set (0.00 sec)
+
+--------------
+/* Question 9: Add a foreign key constraint named fk_staff_id on 
+employee_id column of EMPLOYEE_PAY table referencing to the 
+primary key emp_id of EMPLOYEE table.*/
+ALTER TABLE  employee_pay
+ADD CONSTRAINT fk_staff_id FOREIGN KEY (employee_id) 
+REFERENCES employee (emp_id)
+--------------
+
+Query OK, 1 row affected (0.12 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+--------------
+/* Question 10: Remove the GLOBAL_LOCATIONS_BACKUP table from the
+database. Display the names of the tables in your current database.*/
+DROP TABLE IF EXISTS global_locations_backup
+--------------
+
+Query OK, 0 rows affected (0.04 sec)
+
+--------------
+SHOW tables
+--------------
+
++-------------------+
+| Tables_in_bank    |
++-------------------+
+| account_trans     |
+| account_type      |
+| accounts          |
+| agent             |
+| branch            |
+| business_client   |
+| category          |
+| clients           |
+| department        |
+| employee          |
+| employee_pay      |
+| individual_client |
+| jobs              |
+| location          |
++-------------------+
+14 rows in set (0.00 sec)
+
+--------------
+/* Question 11: Enter one row into the CATEGORY table. Execute a 
+SELECT * statement to verify your input.*/
+INSERT INTO category
+VALUES ('MMA', 'Money Mark Account')
+--------------
+
+ERROR 1062 (23000): Duplicate entry 'MMA' for key 'category.PRIMARY'
+--------------
+SELECT *
+FROM category
+--------------
+
++-------------+----------------------------------+
+| category_id | category_name                    |
++-------------+----------------------------------+
+| Account     | Individual and Business Accounts |
+| Loan        | Individual and Business Loans    |
+| MMA         | Money Market Account             |
++-------------+----------------------------------+
+3 rows in set (0.00 sec)
+
+--------------
+/* Question 12: Update the misspelled name to “Money Market Account”.*/
+UPDATE category
+SET category_name = 'Money Market Account'
+WHERE category_id = 'MMA'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+--------------
+/* Question 13: Modify the ACCOUNTS table so that clients may not have
+more than one account for each account type.
+Note: writing as a comment so that it doesn't execute, per discussion board.*/
+/*ALTER TABLE accounts
+ADD CONSTRAINT one_act_type UNIQUE (type_id, client_id);*/
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> notee

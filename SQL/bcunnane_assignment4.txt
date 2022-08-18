@@ -1,0 +1,547 @@
+mysql> source C:\Users\Brandon\Google Drive\cs\CS31A\4\bcunnane_assignment4.sql
+--------------
+/* Assignment4.sql 
+   BRANDON CUNNANE
+   CS 31A, Summer 2022
+*/
+
+/* Set Database. */
+USE bank
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+/* Question 1: For all accounts opened on May 23, 2015, write a SQL 
+statement that lists the account ID, created dat, and client ID. */
+SELECT account_id, created, client_id
+FROM accounts
+WHERE created = '2015-05-23'
+--------------
+
++------------+------------+-----------+
+| account_id | created    | client_id |
++------------+------------+-----------+
+|  244476237 | 2015-05-23 |      4349 |
+|  244477695 | 2015-05-23 |      4797 |
++------------+------------+-----------+
+2 rows in set (0.01 sec)
+
+--------------
+/* Question 2: For all accounts, write a SQL statement that lists 
+the account ID, created date, type ID, account name, and category 
+ID for each type that make up the account. Order the rows by
+category ID and then by account ID. */
+SELECT a.account_id, a.created, a.type_id, t.account_name, t.category_id
+FROM accounts a, account_type t
+WHERE a.type_id = t.type_id
+ORDER BY t.category_id, a.account_id
+--------------
+
++------------+------------+---------+-------------------------+-------------+
+| account_id | created    | type_id | account_name            | category_id |
++------------+------------+---------+-------------------------+-------------+
+|   24454848 | 2016-07-30 | CHK     | checking account        | Account     |
+|  233344102 | 2015-08-30 | SAV     | savings account         | Account     |
+|  233355103 | 2015-07-30 | SAV     | savings account         | Account     |
+|  233355234 | 2006-03-30 | CD      | certificate of deposit  | Account     |
+|  233357979 | 2016-07-30 | SAV     | savings account         | Account     |
+|  233358765 | 2015-09-28 | SAV     | savings account         | Account     |
+|  233777234 | 2015-03-30 | SAV     | savings account         | Account     |
+|  233778884 | 2015-03-30 | CD      | certificate of deposit  | Account     |
+|  239898103 | 2016-07-30 | SAV     | savings account         | Account     |
+|  244454636 | 2015-01-15 | CHK     | checking account        | Account     |
+|  244456093 | 2015-01-15 | SAV     | savings account         | Account     |
+|  244457125 | 2014-08-30 | CD      | certificate of deposit  | Account     |
+|  244457867 | 2006-03-12 | CHK     | checking account        | Account     |
+|  244459245 | 2017-11-23 | CHK     | checking account        | Account     |
+|  244459330 | 2014-12-15 | MM      | money market account    | Account     |
+|  244462213 | 2015-09-12 | CHK     | checking account        | Account     |
+|  244463194 | 2015-01-15 | SAV     | savings account         | Account     |
+|  244463358 | 2014-01-27 | CHK     | checking account        | Account     |
+|  244466770 | 2015-08-24 | CHK     | checking account        | Account     |
+|  244468276 | 2014-12-28 | CD      | certificate of deposit  | Account     |
+|  244472540 | 2014-01-12 | CD      | certificate of deposit  | Account     |
+|  244476237 | 2015-05-23 | CHK     | checking account        | Account     |
+|  244477695 | 2015-05-23 | SAV     | savings account         | Account     |
+|  244482380 | 2014-07-30 | CHK     | checking account        | Account     |
+|  244482964 | 2014-10-28 | MM      | money market account    | Account     |
+|  244484103 | 2014-06-30 | SAV     | savings account         | Account     |
+|  244488575 | 2006-07-30 | CHK     | checking account        | Account     |
+|  244490593 | 2015-03-12 | CHK     | checking account        | Account     |
+|  244490646 | 2015-01-15 | SAV     | savings account         | Account     |
+|  244522777 | 2014-09-30 | CHK     | checking account        | Account     |
+|  244555103 | 2015-06-30 | CHK     | checking account        | Account     |
+|  244555432 | 2014-06-30 | CHK     | checking account        | Account     |
+|  244566666 | 2015-06-25 | CHK     | checking account        | Account     |
+|  244777103 | 2015-09-30 | CHK     | checking account        | Account     |
+|  241155451 | 2015-12-23 | SBL     | small business loan     | Loan        |
+|  243355451 | 2015-03-12 | SBL     | small business loan     | Loan        |
+|  244455451 | 2015-02-22 | SBL     | small business loan     | Loan        |
+|  244487802 | 2014-03-22 | BUS     | business line of credit | Loan        |
+|  244490451 | 2014-02-22 | SBL     | small business loan     | Loan        |
+|  244524021 | 2014-10-01 | BUS     | business line of credit | Loan        |
++------------+------------+---------+-------------------------+-------------+
+40 rows in set (0.00 sec)
+
+--------------
+/* Question 3: Display the account ID, created date, type ID, account
+name, and client ID for each account that is not a “checking account”.*/
+SELECT A.account_id, A.created, a.type_id, t.account_name, a.client_id, t.account_name
+FROM accounts a 
+JOIN account_type t ON (a.type_id = t.type_id)
+WHERE t.account_name != 'checking account'
+--------------
+
++------------+------------+---------+-------------------------+-----------+-------------------------+
+| account_id | created    | type_id | account_name            | client_id | account_name            |
++------------+------------+---------+-------------------------+-----------+-------------------------+
+|  244487802 | 2014-03-22 | BUS     | business line of credit |      2630 | business line of credit |
+|  244524021 | 2014-10-01 | BUS     | business line of credit |      2630 | business line of credit |
+|  233355234 | 2006-03-30 | CD      | certificate of deposit  |      1651 | certificate of deposit  |
+|  233778884 | 2015-03-30 | CD      | certificate of deposit  |      2343 | certificate of deposit  |
+|  244457125 | 2014-08-30 | CD      | certificate of deposit  |      1514 | certificate of deposit  |
+|  244468276 | 2014-12-28 | CD      | certificate of deposit  |     93411 | certificate of deposit  |
+|  244472540 | 2014-01-12 | CD      | certificate of deposit  |      3348 | certificate of deposit  |
+|  244459330 | 2014-12-15 | MM      | money market account    |      7348 | money market account    |
+|  244482964 | 2014-10-28 | MM      | money market account    |      8778 | money market account    |
+|  233344102 | 2015-08-30 | SAV     | savings account         |      1651 | savings account         |
+|  233355103 | 2015-07-30 | SAV     | savings account         |      1651 | savings account         |
+|  233357979 | 2016-07-30 | SAV     | savings account         |      4349 | savings account         |
+|  233358765 | 2015-09-28 | SAV     | savings account         |      6347 | savings account         |
+|  233777234 | 2015-03-30 | SAV     | savings account         |      1888 | savings account         |
+|  239898103 | 2016-07-30 | SAV     | savings account         |      2347 | savings account         |
+|  244456093 | 2015-01-15 | SAV     | savings account         |      4345 | savings account         |
+|  244463194 | 2015-01-15 | SAV     | savings account         |      9372 | savings account         |
+|  244477695 | 2015-05-23 | SAV     | savings account         |      4797 | savings account         |
+|  244484103 | 2014-06-30 | SAV     | savings account         |      8778 | savings account         |
+|  244490646 | 2015-01-15 | SAV     | savings account         |      3231 | savings account         |
+|  241155451 | 2015-12-23 | SBL     | small business loan     |      4696 | small business loan     |
+|  243355451 | 2015-03-12 | SBL     | small business loan     |      8789 | small business loan     |
+|  244455451 | 2015-02-22 | SBL     | small business loan     |      6043 | small business loan     |
+|  244490451 | 2014-02-22 | SBL     | small business loan     |      1346 | small business loan     |
++------------+------------+---------+-------------------------+-----------+-------------------------+
+24 rows in set (0.00 sec)
+
+--------------
+/* Question 4: Display all accounts names along with account IDs. (Use the
+type_id column in the accounts table to link to the ACCOUNT_TYPE table).
+Include all accounts, even if no accounts have been opened for that type.*/
+SELECT t.type_id, a.account_id, a.client_id, a.avail_balance, t.account_name
+FROM account_type t
+LEFT JOIN accounts a
+ON (a.type_id = t.type_id)
+--------------
+
++---------+------------+-----------+---------------+-------------------------+
+| type_id | account_id | client_id | avail_balance | account_name            |
++---------+------------+-----------+---------------+-------------------------+
+| AUT     |       NULL |      NULL |          NULL | auto loan               |
+| BUS     |  244487802 |      2630 |       9345.55 | business line of credit |
+| BUS     |  244524021 |      2630 |          0.00 | business line of credit |
+| CD      |  233355234 |      1651 |       1500.00 | certificate of deposit  |
+| CD      |  233778884 |      2343 |       1500.00 | certificate of deposit  |
+| CD      |  244457125 |      1514 |       3000.00 | certificate of deposit  |
+| CD      |  244468276 |     93411 |      10000.00 | certificate of deposit  |
+| CD      |  244472540 |      3348 |       5000.00 | certificate of deposit  |
+| CHK     |   24454848 |      4349 |       8900.00 | checking account        |
+| CHK     |  244454636 |      4345 |       1057.75 | checking account        |
+| CHK     |  244457867 |      2347 |       2258.02 | checking account        |
+| CHK     |  244459245 |      6539 |       1057.75 | checking account        |
+| CHK     |  244462213 |     93411 |        534.12 | checking account        |
+| CHK     |  244463358 |      9372 |       2237.97 | checking account        |
+| CHK     |  244466770 |      9372 |        122.37 | checking account        |
+| CHK     |  244476237 |      4349 |       3487.19 | checking account        |
+| CHK     |  244482380 |      7612 |        125.67 | checking account        |
+| CHK     |  244488575 |      1346 |      38552.05 | checking account        |
+| CHK     |  244490593 |      2469 |       2258.02 | checking account        |
+| CHK     |  244522777 |      3344 |      23575.12 | checking account        |
+| CHK     |  244555103 |      3567 |       1500.00 | checking account        |
+| CHK     |  244555432 |     93411 |      11200.00 | checking account        |
+| CHK     |  244566666 |      4349 |       5500.00 | checking account        |
+| CHK     |  244777103 |      3567 |      45000.00 | checking account        |
+| MM      |  244459330 |      7348 |       2212.50 | money market account    |
+| MM      |  244482964 |      8778 |       9345.55 | money market account    |
+| MRT     |       NULL |      NULL |          NULL | home mortgage           |
+| SAV     |  233344102 |      1651 |       3600.00 | savings account         |
+| SAV     |  233355103 |      1651 |       1500.00 | savings account         |
+| SAV     |  233357979 |      4349 |      10500.00 | savings account         |
+| SAV     |  233358765 |      6347 |      18000.00 | savings account         |
+| SAV     |  233777234 |      1888 |       1500.00 | savings account         |
+| SAV     |  239898103 |      2347 |       6500.00 | savings account         |
+| SAV     |  244456093 |      4345 |        500.00 | savings account         |
+| SAV     |  244463194 |      9372 |        767.77 | savings account         |
+| SAV     |  244477695 |      4797 |        387.99 | savings account         |
+| SAV     |  244484103 |      8778 |       1500.00 | savings account         |
+| SAV     |  244490646 |      3231 |        767.77 | savings account         |
+| SBL     |  241155451 |      4696 |      50000.00 | small business loan     |
+| SBL     |  243355451 |      8789 |      50000.00 | small business loan     |
+| SBL     |  244455451 |      6043 |      50000.00 | small business loan     |
+| SBL     |  244490451 |      1346 |      50000.00 | small business loan     |
++---------+------------+-----------+---------------+-------------------------+
+42 rows in set (0.00 sec)
+
+--------------
+/*Question 5: Display all accounts opened by experienced tellers who were hired
+prior to January 1, 2007 and currently assigned to the Chicago branch. Display
+account ID, client ID, created date, and type ID.*/
+SELECT a.account_id, a.client_id, a.created, a.type_id
+FROM accounts a
+JOIN employee e ON (a.open_emp_id = e.emp_id)
+JOIN branch b ON (e.branch_id = b.branch_id)
+WHERE start_date < '2007-01-01' AND branch_name = 'Chicago Branch'
+--------------
+
++------------+-----------+------------+---------+
+| account_id | client_id | created    | type_id |
++------------+-----------+------------+---------+
+|  244454636 |      4345 | 2015-01-15 | CHK     |
++------------+-----------+------------+---------+
+1 row in set (0.00 sec)
+
+--------------
+/*Question 6: Display the account id and federal tax number for all 
+non-business accounts.*/
+SELECT a.account_id, c.fed_id, ic.first_name, ic.last_name
+FROM accounts a
+JOIN clients c ON (a.client_id = c.client_id)
+JOIN individual_client ic ON (a.client_id = ic.client_id)
+--------------
+
++------------+-------------+------------+-----------+
+| account_id | fed_id      | first_name | last_name |
++------------+-------------+------------+-----------+
+|  244488575 | 111-55-5555 | Giulia     | Spencer   |
+|  244490451 | 111-55-5555 | Giulia     | Spencer   |
+|  244457125 | 222-66-5555 | Smith      | Nolan     |
+|  233344102 | 555-55-6666 | Joe        | Evansr    |
+|  233355103 | 555-55-6666 | Joe        | Evansr    |
+|  233355234 | 555-55-6666 | Joe        | Evansr    |
+|  233777234 | 111-11-1111 | Nolan      | Corbett   |
+|  233778884 | 222-22-2222 | Eric       | Barrow    |
+|  239898103 | 222-66-6666 | Margaret   | Young     |
+|  244457867 | 222-66-6666 | Margaret   | Young     |
+|  244490593 | 111-55-2222 | Kyan       | Rubio     |
+|  244490646 | 333-33-9999 | Cory       | Goodwin   |
+|  244522777 | 333-33-3333 | Jason      | Evansr    |
+|  244472540 | 333-77-7777 | George     | Major     |
+|  244454636 | 444-44-4444 | Arnold     | Cross     |
+|  244456093 | 444-44-4444 | Arnold     | Cross     |
+|   24454848 | 222-88-8888 | Reya       | Swanson   |
+|  233357979 | 222-88-8888 | Reya       | Swanson   |
+|  244476237 | 222-88-8888 | Reya       | Swanson   |
+|  244566666 | 222-88-8888 | Reya       | Swanson   |
+|  241155451 | 111-11-2222 | Casey      | Makhi     |
+|  244477695 | 333-77-6666 | Jason      | Chen      |
+|  244455451 | 444-44-2222 | Danny      | Fleming   |
+|  233358765 | 666-66-6666 | Cory       | Field     |
+|  244459245 | 777-77-3333 | Jan        | Vincent   |
+|  244459330 | 777-77-7777 | Dani       | Leonard   |
+|  244482380 | 222-88-7777 | Billy      | Harmon    |
+|  244482964 | 222-99-8888 | Richard    | Toby      |
+|  244484103 | 222-99-8888 | Richard    | Toby      |
+|  243355451 | 888-88-5555 | Maryam     | Blake     |
+|  244463194 | 999-99-4444 | Izabelle   | Rollins   |
+|  244463358 | 999-99-4444 | Izabelle   | Rollins   |
+|  244466770 | 999-99-4444 | Izabelle   | Rollins   |
+|  244462213 | 999-99-9999 | Richard    | Gentry    |
+|  244468276 | 999-99-9999 | Richard    | Gentry    |
+|  244555432 | 999-99-9999 | Richard    | Gentry    |
++------------+-------------+------------+-----------+
+36 rows in set (0.00 sec)
+
+--------------
+/*Question 7: Use the UNION ALL operator to generate a full set 
+of client data from the INDIVIDUAL_CLIENT and BUSINESS_CLIENT tables*/
+SELECT client_id, last_name AS 'name'
+FROM individual_client
+UNION ALL
+SELECT client_id, bus_name
+FROM business_client
+--------------
+
++-----------+-------------------------+
+| client_id | name                    |
++-----------+-------------------------+
+|      1346 | Spencer                 |
+|      1514 | Nolan                   |
+|      1651 | Evansr                  |
+|      1888 | Corbett                 |
+|      2343 | Barrow                  |
+|      2347 | Young                   |
+|      2469 | Rubio                   |
+|      3231 | Goodwin                 |
+|      3344 | Evansr                  |
+|      3348 | Major                   |
+|      4345 | Cross                   |
+|      4349 | Swanson                 |
+|      4696 | Makhi                   |
+|      4797 | Chen                    |
+|      5346 | Howell                  |
+|      6043 | Fleming                 |
+|      6347 | Field                   |
+|      6387 | Cross                   |
+|      6539 | Vincent                 |
+|      7348 | Leonard                 |
+|      7612 | Harmon                  |
+|      7855 | Aldo                    |
+|      8349 | Howell                  |
+|      8778 | Toby                    |
+|      8789 | Blake                   |
+|      9372 | Rollins                 |
+|     53411 | Adele                   |
+|     93411 | Gentry                  |
+|      1562 | Primary Engineering g   |
+|      1635 | Trusted Transport       |
+|      2563 | Northeast Cooling Inc.  |
+|      2630 | Mega Computers          |
+|      2703 | Software Warehouse      |
+|      3221 | Engineering Design Co   |
+|      3562 | Supreme Engineering     |
+|      3563 | Computer Buy Inc.       |
+|      3564 | Super Auto Body         |
+|      3566 | Recover Auto Body       |
+|      3567 | Compass Mortgage.       |
+|      4565 | AAA Insurance Inc.      |
+|      5274 | One Stop Shop Computers |
+|      5615 | Safe  Insurance Inc.    |
+|      8182 | Platinum Engineering    |
+|      8289 | Safety Systems          |
++-----------+-------------------------+
+44 rows in set (0.00 sec)
+
+--------------
+/*Question 8: Display all accounts along with either the first name and
+last name of individual clients OR the business name of business clients.*/
+SELECT a.account_id, a.type_id, 
+concat(ic.first_name, ' ', ic.last_name) AS 'person_name', 
+bc.bus_name AS 'business_name'
+FROM accounts a
+LEFT JOIN individual_client ic ON (a.client_id = ic.client_id)
+LEFT JOIN business_client bc ON (a.client_id = bc.client_id)
+--------------
+
++------------+---------+------------------+-------------------+
+| account_id | type_id | person_name      | business_name     |
++------------+---------+------------------+-------------------+
+|   24454848 | CHK     | Reya Swanson     | NULL              |
+|  233344102 | SAV     | Joe Evansr       | NULL              |
+|  233355103 | SAV     | Joe Evansr       | NULL              |
+|  233355234 | CD      | Joe Evansr       | NULL              |
+|  233357979 | SAV     | Reya Swanson     | NULL              |
+|  233358765 | SAV     | Cory Field       | NULL              |
+|  233777234 | SAV     | Nolan Corbett    | NULL              |
+|  233778884 | CD      | Eric Barrow      | NULL              |
+|  239898103 | SAV     | Margaret Young   | NULL              |
+|  241155451 | SBL     | Casey Makhi      | NULL              |
+|  243355451 | SBL     | Maryam Blake     | NULL              |
+|  244454636 | CHK     | Arnold Cross     | NULL              |
+|  244455451 | SBL     | Danny Fleming    | NULL              |
+|  244456093 | SAV     | Arnold Cross     | NULL              |
+|  244457125 | CD      | Smith Nolan      | NULL              |
+|  244457867 | CHK     | Margaret Young   | NULL              |
+|  244459245 | CHK     | Jan  Vincent     | NULL              |
+|  244459330 | MM      | Dani Leonard     | NULL              |
+|  244462213 | CHK     | Richard Gentry   | NULL              |
+|  244463194 | SAV     | Izabelle Rollins | NULL              |
+|  244463358 | CHK     | Izabelle Rollins | NULL              |
+|  244466770 | CHK     | Izabelle Rollins | NULL              |
+|  244468276 | CD      | Richard Gentry   | NULL              |
+|  244472540 | CD      | George Major     | NULL              |
+|  244476237 | CHK     | Reya Swanson     | NULL              |
+|  244477695 | SAV     | Jason Chen       | NULL              |
+|  244482380 | CHK     | Billy  Harmon    | NULL              |
+|  244482964 | MM      | Richard Toby     | NULL              |
+|  244484103 | SAV     | Richard Toby     | NULL              |
+|  244487802 | BUS     | NULL             | Mega Computers    |
+|  244488575 | CHK     | Giulia Spencer   | NULL              |
+|  244490451 | SBL     | Giulia Spencer   | NULL              |
+|  244490593 | CHK     | Kyan Rubio       | NULL              |
+|  244490646 | SAV     | Cory Goodwin     | NULL              |
+|  244522777 | CHK     | Jason Evansr     | NULL              |
+|  244524021 | BUS     | NULL             | Mega Computers    |
+|  244555103 | CHK     | NULL             | Compass Mortgage. |
+|  244555432 | CHK     | Richard Gentry   | NULL              |
+|  244566666 | CHK     | Reya Swanson     | NULL              |
+|  244777103 | CHK     | NULL             | Compass Mortgage. |
++------------+---------+------------------+-------------------+
+40 rows in set (0.00 sec)
+
+--------------
+/*Question 9: Display the account ID, client last name, federal ID,
+and account names. Display the first 10 rows in the result set.*/
+SELECT account_id, last_name, fed_id, account_name
+FROM accounts a
+JOIN individual_client ic ON (a.client_id = ic.client_id)
+JOIN clients c ON (a.client_id = c.client_id)
+JOIN account_type t ON (a.type_id = t.type_id)
+LIMIT 10
+--------------
+
++------------+-----------+-------------+------------------------+
+| account_id | last_name | fed_id      | account_name           |
++------------+-----------+-------------+------------------------+
+|  244488575 | Spencer   | 111-55-5555 | checking account       |
+|  244490451 | Spencer   | 111-55-5555 | small business loan    |
+|  244457125 | Nolan     | 222-66-5555 | certificate of deposit |
+|  233344102 | Evansr    | 555-55-6666 | savings account        |
+|  233355103 | Evansr    | 555-55-6666 | savings account        |
+|  233355234 | Evansr    | 555-55-6666 | certificate of deposit |
+|  233777234 | Corbett   | 111-11-1111 | savings account        |
+|  233778884 | Barrow    | 222-22-2222 | certificate of deposit |
+|  239898103 | Young     | 222-66-6666 | savings account        |
+|  244457867 | Young     | 222-66-6666 | checking account       |
++------------+-----------+-------------+------------------------+
+10 rows in set (0.00 sec)
+
+--------------
+/*Question 10: Display the total available balance by account type
+and branch where there is more than one account per type and branch. 
+Order the results by total balance (highest to lowest).*/
+SELECT type_id, branch_id, SUM(avail_balance) AS total
+FROM accounts
+GROUP BY type_id, branch_id
+HAVING COUNT(*) > 1
+ORDER BY total DESC
+--------------
+
++---------+-----------+-----------+
+| type_id | branch_id | total     |
++---------+-----------+-----------+
+| CHK     |      1515 | 110885.19 |
+| SAV     |      1111 |  23100.00 |
+| CHK     |      1717 |  14094.46 |
+| SAV     |      8881 |  12000.00 |
+| BUS     |      1515 |   9345.55 |
+| CHK     |      1414 |   9025.67 |
+| CHK     |      1313 |   8987.19 |
++---------+-----------+-----------+
+7 rows in set (0.00 sec)
+
+--------------
+/*Question 11: You are in charge of operations at the bank, and you 
+would like to find out how many accounts are being opened by each 
+bank teller employee. Display open employee ID and how many accounts 
+each teller employee opened.*/
+SELECT open_emp_id, COUNT(*)
+FROM accounts
+GROUP BY open_emp_id
+--------------
+
++-------------+----------+
+| open_emp_id | COUNT(*) |
++-------------+----------+
+|   184167702 |        1 |
+|   184167713 |        1 |
+|   215201502 |        1 |
+|   227948102 |        2 |
+|   231230948 |        2 |
+|   233247642 |        1 |
+|   233755101 |        1 |
+|   233755991 |        1 |
+|   234999456 |        1 |
+|   236123642 |        1 |
+|   236345948 |        2 |
+|   236670948 |        1 |
+|   236799948 |        1 |
+|   236912342 |        1 |
+|   236959804 |        1 |
+|   238226737 |        1 |
+|   238234737 |        2 |
+|   238267332 |        4 |
+|   238267721 |        1 |
+|   238345737 |        5 |
+|   239877844 |        1 |
+|   239911144 |        1 |
+|   239961224 |        2 |
+|   239961844 |        1 |
+|   239978944 |        4 |
++-------------+----------+
+25 rows in set (0.00 sec)
+
+--------------
+/*Question 12: Display any cases where an employee has opened fewer 
+than five accounts.*/
+SELECT open_emp_id, COUNT(*)
+FROM accounts
+GROUP BY open_emp_id
+HAVING COUNT(*) < 5
+--------------
+
++-------------+----------+
+| open_emp_id | COUNT(*) |
++-------------+----------+
+|   184167702 |        1 |
+|   184167713 |        1 |
+|   215201502 |        1 |
+|   227948102 |        2 |
+|   231230948 |        2 |
+|   233247642 |        1 |
+|   233755101 |        1 |
+|   233755991 |        1 |
+|   234999456 |        1 |
+|   236123642 |        1 |
+|   236345948 |        2 |
+|   236670948 |        1 |
+|   236799948 |        1 |
+|   236912342 |        1 |
+|   236959804 |        1 |
+|   238226737 |        1 |
+|   238234737 |        2 |
+|   238267332 |        4 |
+|   238267721 |        1 |
+|   239877844 |        1 |
+|   239911144 |        1 |
+|   239961224 |        2 |
+|   239961844 |        1 |
+|   239978944 |        4 |
++-------------+----------+
+24 rows in set (0.00 sec)
+
+--------------
+/*Question 13: Display the total balances not only for each account, 
+but for both types and branches (e.g., What is the total balance for 
+all checking accounts opened at the San Francisco branch?). Filter out 
+any type with a total available balance less than $10,000.*/
+SELECT type_id, branch_id, SUM(avail_balance)
+FROM accounts
+GROUP BY type_id, branch_id
+HAVING SUM(avail_balance) >= 10000
+--------------
+
++---------+-----------+--------------------+
+| type_id | branch_id | SUM(avail_balance) |
++---------+-----------+--------------------+
+| SAV     |      1111 |           23100.00 |
+| SAV     |      8881 |           12000.00 |
+| SBL     |      6661 |           50000.00 |
+| SBL     |      1111 |           50000.00 |
+| SBL     |      1616 |           50000.00 |
+| CHK     |      1717 |           14094.46 |
+| CD      |      1717 |           10000.00 |
+| CHK     |      1515 |          110885.19 |
+| SBL     |      1515 |           50000.00 |
++---------+-----------+--------------------+
+9 rows in set (0.00 sec)
+
+--------------
+/*Question 14: Display any type with a total available balance 
+greater than $10,000.*/
+SELECT type_id, SUM(avail_balance)
+FROM accounts
+GROUP BY type_id
+HAVING SUM(avail_balance) > 10000
+--------------
+
++---------+--------------------+
+| type_id | SUM(avail_balance) |
++---------+--------------------+
+| CD      |           21000.00 |
+| CHK     |          147366.03 |
+| MM      |           11558.05 |
+| SAV     |           45523.53 |
+| SBL     |          200000.00 |
++---------+--------------------+
+5 rows in set (0.00 sec)
+
+mysql> notee

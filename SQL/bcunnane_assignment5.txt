@@ -1,0 +1,468 @@
+mysql> source C:\Users\Brandon\Google Drive\cs\CS31A\5\bcunnane_assignment5.sql
+--------------
+/* Assignment5.sql 
+   BRANDON CUNNANE
+   CS 31A, Summer 2022
+*/
+
+/* Set Database. */
+USE bank
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+/* Question 1: Write a query that uses a filter condition with a
+noncorrelated subquery against the account type table to find all 
+loan accounts (account_type.category_id= 'LOAN'). Display the 
+account ID, type_id, client_id, and available balance.*/
+SELECT account_id, type_id, client_id, avail_balance
+FROM accounts
+WHERE type_id IN (SELECT type_id FROM account_type WHERE category_id='LOAN')
+--------------
+
++------------+---------+-----------+---------------+
+| account_id | type_id | client_id | avail_balance |
++------------+---------+-----------+---------------+
+|  244487802 | BUS     |      2630 |       9345.55 |
+|  244524021 | BUS     |      2630 |          0.00 |
+|  241155451 | SBL     |      4696 |      50000.00 |
+|  243355451 | SBL     |      8789 |      50000.00 |
+|  244455451 | SBL     |      6043 |      50000.00 |
+|  244490451 | SBL     |      1346 |      50000.00 |
++------------+---------+-----------+---------------+
+6 rows in set (0.01 sec)
+
+--------------
+/* Question 2: Rewrite the query from Question 1 using a correlated
+subquery against the ACCOUNT_TYPE table to achieve the same results.*/
+SELECT account_id, type_id, client_id, avail_balance
+FROM accounts
+WHERE EXISTS (SELECT type_id FROM account_type 
+	WHERE accounts.type_id=type_id AND category_id='LOAN')
+--------------
+
++------------+---------+-----------+---------------+
+| account_id | type_id | client_id | avail_balance |
++------------+---------+-----------+---------------+
+|  244487802 | BUS     |      2630 |       9345.55 |
+|  244524021 | BUS     |      2630 |          0.00 |
+|  241155451 | SBL     |      4696 |      50000.00 |
+|  243355451 | SBL     |      8789 |      50000.00 |
+|  244455451 | SBL     |      6043 |      50000.00 |
+|  244490451 | SBL     |      1346 |      50000.00 |
++------------+---------+-----------+---------------+
+6 rows in set (0.00 sec)
+
+--------------
+/* Question 3: Display the employee ID, first name, last name, and 
+the department names and branch to which the employee is assigned.
+Do not join any tables.*/
+SELECT emp_id, first_name, last_name, 
+(SELECT dept_name FROM department WHERE department.dept_id = employee.dept_id)
+AS department_name, 
+(SELECT branch_name FROM branch WHERE branch.branch_id = employee.branch_id)
+AS branch_name
+FROM employee
+--------------
+
++-----------+------------+-----------+------------------------+----------------------+
+| emp_id    | first_name | last_name | department_name        | branch_name          |
++-----------+------------+-----------+------------------------+----------------------+
+| 122212562 | Susan      | Barker    | Administration         | Headquarter          |
+| 184167702 | Helen      | Fleming   | General Operations     | Headquarter          |
+| 184167713 | Allen      | Kevin     | General Operations     | Saint Marks Branch   |
+| 190538847 | Robert     | Tyler     | Administration         | Headquarter          |
+| 214487586 | Pirkko     | Koskitalo | General Operations     | Market Branch        |
+| 214567554 | Gregory    | Webb      | Administration         | Chestnut Branch      |
+| 215201502 | Chris      | Tucker    | General Operations     | Headquarter          |
+| 215201514 | Cynthia    | Ward      | General Operations     | Saint Marks Branch   |
+| 216123586 | Emil       | Kline     | General Operations     | Jackson Branch       |
+| 216123777 | Edison     | Herbert   | Administration         | Jackson Branch       |
+| 216313332 | Varun      | Sanchez   | General Operations     | Montgomery Branch    |
+| 216315586 | Livia      | Hall      | General Operations     | New York Branch      |
+| 216317321 | Maxim      | Benitez   | Administration         | Madison Branch       |
+| 216317324 | Filip      | Gates     | General Operations     | Madison Branch       |
+| 216317432 | Samuel     | Ellis     | Administration         | Montgomery Branch    |
+| 216317552 | Diego      | Roel      | General Operations     | 36 Branch            |
+| 216317554 | Patricio   | Simpson   | Administration         | 36 Branch            |
+| 216317555 | Diego      | Roel      | General Operations     | San Francisco Branch |
+| 216317586 | Susan      | Hawthorne | General Operations     | Headquarter          |
+| 216317598 | Kenneth    | Martin    | Administration         | Saint Marks Branch   |
+| 216317655 | Fran       | Rovelli   | General Operations     | Montgomery Branch    |
+| 216317777 | Thomas     | Hardy     | Administration         | Madison  Branch      |
+| 216317786 | Maria      | Anders    | General Operations     | Madison  Branch      |
+| 216317878 | Micheal    | Couch     | Administration         | New York Branch      |
+| 216317996 | Randy      | Clarke    | General Operations     | Chicago Branch       |
+| 216317997 | Simon      | Crowther  | Administration         | Chicago Branch       |
+| 216318876 | Faizan     | Murphy    | Administration         | Howard Branch        |
+| 216328754 | Daniel     | Tonini    | Administration         | Montgomery Branch    |
+| 216344586 | Allen      | Amin      | General Operations     | Howard Branch        |
+| 216354555 | Samah      | Rasmussen | General Operations     | Broadway Branch      |
+| 216388554 | Patricio   | Simpson   | Administration         | San Francisco Branch |
+| 216388855 | Sufyan     | Stevenson | General Operations     | Michigan Branch      |
+| 216444554 | Adil       | Fischer   | Administration         | Michigan Branch      |
+| 216456555 | Avneet     | Andersen  | General Operations     | Chestnut Branch      |
+| 216777554 | Steve      | Monaghan  | Administration         | Broadway Branch      |
+| 218803412 | Michael    | Smith     | Administration         | Headquarter          |
+| 218887777 | Matti      | Karttunen | Administration         | Market Branch        |
+| 220826781 | Terry      | Jones     | General Operations     | Saint Marks Branch   |
+| 220826782 | Sarah      | Parker    | General Operations     | Headquarter          |
+| 225748882 | Alexander  | Peter     | Information Technology | Headquarter          |
+| 227948102 | Jane       | Grossman  | General Operations     | Headquarter          |
+| 227948103 | Marion     | Blake     | General Operations     | Saint Marks Branch   |
+| 227948882 | Ellen      | Abel      | Information Technology | Headquarter          |
+| 227967930 | Paula      | Roberts   | General Operations     | Saint Marks Branch   |
+| 230034070 | Thomas     | Ziegler   | General Operations     | Saint Marks Branch   |
+| 231230948 | Shelly     | Cannon    | General Operations     | Jackson Branch       |
+| 231232223 | Ted        | Rooney    | Administration         | Jackson Branch       |
+| 231235101 | Tommie     | Dougherty | General Operations     | Jackson Branch       |
+| 231934675 | Samantha   | Jameson   | General Operations     | Saint Marks Branch   |
+| 232224456 | Lianne     | Wrightn   | Administration         | Broadway Branch      |
+| 233247642 | Paula      | Wilson    | General Operations     | Market Branch        |
+| 233345101 | Angel      | Ibsen     | General Operations     | Market Branch        |
+| 233454456 | Caspian    | Wells     | Administration         | Chestnut Branch      |
+| 233755101 | Christina  | Berglund  | General Operations     | Madison  Branch      |
+| 233755222 | Alexie     | Berglund  | General Operations     | New York Branch      |
+| 233755991 | Zackary    | Fuller    | General Operations     | Chicago Branch       |
+| 234522356 | John       | Steel     | Administration         | Montgomery Branch    |
+| 234562223 | Antonio    | Morenol   | Administration         | Madison  Branch      |
+| 234562356 | Elizabeth  | Brown     | Administration         | 36 Branch            |
+| 234562993 | Gene       | Irving    | Administration         | Chicago Branch       |
+| 234564322 | James      | Shelton   | Administration         | Madison Branch       |
+| 234564454 | Chace      | Spence    | Administration         | Howard Branch        |
+| 234564456 | Elizabeth  | Brown     | Administration         | San Francisco Branch |
+| 234564543 | Kaisha     | Talley    | Administration         | Montgomery Branch    |
+| 234999456 | Alexande   | Kelly     | Administration         | Michigan Branch      |
+| 235527642 | Korey      | Abbott    | General Operations     | Howard Branch        |
+| 235580948 | Vladimir   | Escobar   | General Operations     | Howard Branch        |
+| 236123642 | Joel       | Franks    | General Operations     | Jackson Branch       |
+| 236345804 | Jed        | Ramsey    | General Operations     | Broadway Branch      |
+| 236345948 | Hanna      | Ahmed     | General Operations     | New York Branch      |
+| 236456804 | Clay       | May       | General Operations     | Chestnut Branch      |
+| 236666804 | Jadon      | Mullen    | General Operations     | Michigan Branch      |
+| 236670948 | Janete     | Limeira   | General Operations     | Market Branch        |
+| 236780948 | Hanna      | Moos      | General Operations     | Madison  Branch      |
+| 236799948 | Yousaf     | Cobb      | General Operations     | Chicago Branch       |
+| 236912342 | Berti      | Shaw      | General Operations     | New York Branch      |
+| 236927642 | Victoria   | Ashworthn | General Operations     | Madison  Branch      |
+| 236956114 | Peter      | Franken   | General Operations     | 36 Branch            |
+| 236956332 | Zain       | Mays      | General Operations     | Madison Branch       |
+| 236956432 | Oliver     | Paine     | General Operations     | Montgomery Branch    |
+| 236956804 | Peter      | Franken   | General Operations     | San Francisco Branch |
+| 236959804 | iovanni    | Franken   | General Operations     | Montgomery Branch    |
+| 236999642 | Kya        | Cruz      | General Operations     | Chicago Branch       |
+| 238226737 | Terry      | Bates     | General Operations     | Broadway Branch      |
+| 238234737 | Umer       | Whitmore  | General Operations     | Michigan Branch      |
+| 238267332 | Kai        | Smart     | General Operations     | Madison Branch       |
+| 238267432 | Zayne      | Bennett   | General Operations     | Montgomery Branch    |
+| 238267721 | Carine     | FSchmitt  | General Operations     | San Francisco Branch |
+| 238267737 | Carine     | FSchmitt  | General Operations     | 36 Branch            |
+| 238269087 | Catherine  | Dewey     | General Operations     | Montgomery Branch    |
+| 238345737 | Aamir      | Head      | General Operations     | Chestnut Branch      |
+| 238892223 | Paula      | Parente   | Administration         | Market Branch        |
+| 239877844 | Wesley     | Rahman    | General Operations     | Broadway Branch      |
+| 239911144 | Georgie    | Sanchez   | General Operations     | Michigan Branch      |
+| 239961224 | Sonny      | Ford      | General Operations     | Madison Branch       |
+| 239961532 | Robert     | Penn      | General Operations     | Montgomery Branch    |
+| 239961844 | Yoshi      | Latimer   | General Operations     | 36 Branch            |
+| 239961855 | Yoshi      | Latimer   | General Operations     | San Francisco Branch |
+| 239969084 | Patricia   | Cramer    | General Operations     | Montgomery Branch    |
+| 239978944 | Toby       | Oliver    | General Operations     | Chestnut Branch      |
+| 244755112 | Eilish     | Reid      | General Operations     | Howard Branch        |
+| 276562223 | Eren       | Battle    | Administration         | New York Branch      |
+| 538682222 | John       | Gooding   | Credit Department      | Headquarter          |
+| 538682223 | John       | Smith     | Credit Department      | Headquarter          |
++-----------+------------+-----------+------------------------+----------------------+
+104 rows in set (0.01 sec)
+
+--------------
+/* Question 4: Display all teller employees at the San Francisco
+branch. Display the employee ID and last name columns.*/
+SELECT *
+FROM employee
+WHERE branch_id = (SELECT branch_id
+				   FROM branch
+				   WHERE branch_name = 'San Francisco Branch')
+AND job_id = (SELECT job_id
+			  FROM jobs
+              WHERE job_title = 'Teller')
+--------------
+
++-----------+------------+-----------+------------+----------+------------+---------+--------+-----------+
+| emp_id    | first_name | last_name | start_date | end_date | manager_id | dept_id | job_id | branch_id |
++-----------+------------+-----------+------------+----------+------------+---------+--------+-----------+
+| 238267721 | Carine     | FSchmitt  | 2010-06-29 | NULL     |  236956804 |     543 | CU_TEL |      6661 |
+| 239961855 | Yoshi      | Latimer   | 2010-11-12 | NULL     |  236956804 |     543 | CU_TEL |      6661 |
++-----------+------------+-----------+------------+----------+------------+---------+--------+-----------+
+2 rows in set (0.02 sec)
+
+--------------
+/* Question 5: Display employee IDs of all employees who supervise
+other employees. Display employee ID, first name, last name, and 
+job ID. Do not join any tables.*/
+SELECT emp_id, first_name, last_name, job_id
+FROM employee
+WHERE emp_id IN (SELECT manager_id FROM employee)
+--------------
+
++-----------+------------+-----------+---------+
+| emp_id    | first_name | last_name | job_id  |
++-----------+------------+-----------+---------+
+| 122212562 | Susan      | Barker    | AD_VP   |
+| 184167702 | Helen      | Fleming   | HD_TEL  |
+| 184167713 | Allen      | Kevin     | HD_TEL  |
+| 190538847 | Robert     | Tyler     | AC_MGR  |
+| 214487586 | Pirkko     | Koskitalo | OP_MAN  |
+| 214567554 | Gregory    | Webb      | OP_MAN  |
+| 216123586 | Emil       | Kline     | OP_MAN  |
+| 216123777 | Edison     | Herbert   | OP_MAN  |
+| 216313332 | Varun      | Sanchez   | OP_MAN  |
+| 216315586 | Livia      | Hall      | LO_MAN  |
+| 216317432 | Samuel     | Ellis     | OP_MAN  |
+| 216317552 | Diego      | Roel      | OP_MAN  |
+| 216317554 | Patricio   | Simpson   | OP_MAN  |
+| 216317555 | Diego      | Roel      | OP_MAN  |
+| 216317586 | Susan      | Hawthorne | OP_MAN  |
+| 216317598 | Kenneth    | Martin    | OP_MAN  |
+| 216317777 | Thomas     | Hardy     | OP_MAN  |
+| 216317878 | Micheal    | Couch     | OP_MAN  |
+| 216317996 | Randy      | Clarke    | OP_MAN  |
+| 216317997 | Simon      | Crowther  | OP_MAN  |
+| 216318876 | Faizan     | Murphy    | OP_MAN  |
+| 216328754 | Daniel     | Tonini    | OP_MAN  |
+| 216354555 | Samah      | Rasmussen | OP_MAN  |
+| 216388554 | Patricio   | Simpson   | OP_MAN  |
+| 216388855 | Sufyan     | Stevenson | OP_MAN  |
+| 216444554 | Adil       | Fischer   | OP_MAN  |
+| 216456555 | Avneet     | Andersen  | OP_MAN  |
+| 216777554 | Steve      | Monaghan  | OP_MAN  |
+| 218803412 | Michael    | Smith     | AD_PRES |
+| 218887777 | Matti      | Karttunen | OP_MAN  |
+| 225748882 | Alexander  | Peter     | IT_MANG |
+| 227967930 | Paula      | Roberts   | AC_MGR  |
+| 231232223 | Ted        | Rooney    | AC_MGR  |
+| 231235101 | Tommie     | Dougherty | HD_TEL  |
+| 232224456 | Lianne     | Wrightn   | AC_MGR  |
+| 233345101 | Angel      | Ibsen     | HD_TEL  |
+| 233454456 | Caspian    | Wells     | AC_MGR  |
+| 233755101 | Christina  | Berglund  | HD_TEL  |
+| 233755222 | Alexie     | Berglund  | HD_TEL  |
+| 233755991 | Zackary    | Fuller    | HD_TEL  |
+| 234522356 | John       | Steel     | AC_MGR  |
+| 234562223 | Antonio    | Morenol   | AC_MGR  |
+| 234562356 | Elizabeth  | Brown     | AC_MGR  |
+| 234562993 | Gene       | Irving    | AC_MGR  |
+| 234564454 | Chace      | Spence    | AC_MGR  |
+| 234564456 | Elizabeth  | Brown     | AC_MGR  |
+| 234564543 | Kaisha     | Talley    | AC_MGR  |
+| 234999456 | Alexande   | Kelly     | AC_MGR  |
+| 236345804 | Jed        | Ramsey    | HD_TEL  |
+| 236456804 | Clay       | May       | HD_TEL  |
+| 236666804 | Jadon      | Mullen    | HD_TEL  |
+| 236956114 | Peter      | Franken   | HD_TEL  |
+| 236956432 | Oliver     | Paine     | HD_TEL  |
+| 236956804 | Peter      | Franken   | HD_TEL  |
+| 236959804 | iovanni    | Franken   | HD_TEL  |
+| 238892223 | Paula      | Parente   | AC_MGR  |
+| 244755112 | Eilish     | Reid      | HD_TEL  |
++-----------+------------+-----------+---------+
+57 rows in set (0.00 sec)
+
+--------------
+/* Question 6: Display accounts with a total available balance
+smaller than all of Richard Toby’s accounts. Display account ID, 
+client ID, type ID, and available balance.*/
+SELECT account_id, client_id, type_id, avail_balance
+FROM accounts
+WHERE avail_balance < (SELECT SUM(avail_balance)
+					   FROM accounts a
+					   JOIN individual_client ic 
+                       ON (a.client_id = ic.client_id)
+                       WHERE first_name = 'Richard' AND last_name = 'Toby')
+--------------
+
++------------+-----------+---------+---------------+
+| account_id | client_id | type_id | avail_balance |
++------------+-----------+---------+---------------+
+|   24454848 |      4349 | CHK     |       8900.00 |
+|  233344102 |      1651 | SAV     |       3600.00 |
+|  233355103 |      1651 | SAV     |       1500.00 |
+|  233355234 |      1651 | CD      |       1500.00 |
+|  233357979 |      4349 | SAV     |      10500.00 |
+|  233777234 |      1888 | SAV     |       1500.00 |
+|  233778884 |      2343 | CD      |       1500.00 |
+|  239898103 |      2347 | SAV     |       6500.00 |
+|  244454636 |      4345 | CHK     |       1057.75 |
+|  244456093 |      4345 | SAV     |        500.00 |
+|  244457125 |      1514 | CD      |       3000.00 |
+|  244457867 |      2347 | CHK     |       2258.02 |
+|  244459245 |      6539 | CHK     |       1057.75 |
+|  244459330 |      7348 | MM      |       2212.50 |
+|  244462213 |     93411 | CHK     |        534.12 |
+|  244463194 |      9372 | SAV     |        767.77 |
+|  244463358 |      9372 | CHK     |       2237.97 |
+|  244466770 |      9372 | CHK     |        122.37 |
+|  244468276 |     93411 | CD      |      10000.00 |
+|  244472540 |      3348 | CD      |       5000.00 |
+|  244476237 |      4349 | CHK     |       3487.19 |
+|  244477695 |      4797 | SAV     |        387.99 |
+|  244482380 |      7612 | CHK     |        125.67 |
+|  244482964 |      8778 | MM      |       9345.55 |
+|  244484103 |      8778 | SAV     |       1500.00 |
+|  244487802 |      2630 | BUS     |       9345.55 |
+|  244490593 |      2469 | CHK     |       2258.02 |
+|  244490646 |      3231 | SAV     |        767.77 |
+|  244524021 |      2630 | BUS     |          0.00 |
+|  244555103 |      3567 | CHK     |       1500.00 |
+|  244566666 |      4349 | CHK     |       5500.00 |
++------------+-----------+---------+---------------+
+31 rows in set (0.01 sec)
+
+--------------
+/* Question 7: Display all saving accounts opened by a teller employee
+at the San Francisco branch. Display account ID, type_id, and client ID.
+Do not join any tables.*/
+SELECT account_id, type_id, client_id
+FROM accounts
+WHERE type_id = 'SAV'
+AND branch_id = (SELECT branch_id
+				   FROM branch
+				   WHERE branch_name = 'Headquarter')
+--------------
+
++------------+---------+-----------+
+| account_id | type_id | client_id |
++------------+---------+-----------+
+|  233344102 | SAV     |      1651 |
+|  233355103 | SAV     |      1651 |
+|  233358765 | SAV     |      6347 |
++------------+---------+-----------+
+3 rows in set (0.01 sec)
+
+--------------
+/* Question 8: Display all the accounts for which a transaction was posted
+on January 5, 2018. Display account ID, client ID, type ID, and available balance.*/
+SELECT account_id, type_id, client_id, avail_balance
+FROM accounts
+WHERE account_id IN (SELECT account_id
+					 FROM account_trans
+                     WHERE trans_date = '2018-01-05')
+--------------
+
++------------+---------+-----------+---------------+
+| account_id | type_id | client_id | avail_balance |
++------------+---------+-----------+---------------+
+|  244522777 | CHK     |      3344 |      23575.12 |
+|  244466770 | CHK     |      9372 |        122.37 |
++------------+---------+-----------+---------------+
+2 rows in set (0.01 sec)
+
+--------------
+/* Question 9: Display a list of department IDs along with the number of
+employees assigned to each department. */
+SELECT dept_id, dept_name, (SELECT COUNT(*)
+						   FROM employee
+                           WHERE department.dept_id = employee.dept_id)
+                           AS num_employees
+FROM department
+--------------
+
++---------+------------------------+---------------+
+| dept_id | dept_name              | num_employees |
++---------+------------------------+---------------+
+|     234 | Administration         |            32 |
+|     254 | Credit Department      |             2 |
+|     334 | Information Technology |             2 |
+|     543 | General Operations     |            68 |
++---------+------------------------+---------------+
+4 rows in set (0.00 sec)
+
+--------------
+/* Question 10: Display data concerning all accounts that were NOT opened
+by the head teller employee at the branch with the location ID 10001 */
+SELECT account_id, type_id, client_id, avail_balance
+FROM accounts
+WHERE open_emp_id IN (SELECT emp_id
+					  FROM employee e
+                      JOIN branch b ON (e.branch_id = b.branch_id)
+                      WHERE loc_id != 10001 AND job_id != 'HD_TEL')
+--------------
+
++------------+---------+-----------+---------------+
+| account_id | type_id | client_id | avail_balance |
++------------+---------+-----------+---------------+
+|   24454848 | CHK     |      4349 |       8900.00 |
+|  233357979 | SAV     |      4349 |      10500.00 |
+|  239898103 | SAV     |      2347 |       6500.00 |
+|  244456093 | SAV     |      4345 |        500.00 |
+|  244457125 | CD      |      1514 |       3000.00 |
+|  244457867 | CHK     |      2347 |       2258.02 |
+|  244459245 | CHK     |      6539 |       1057.75 |
+|  244459330 | MM      |      7348 |       2212.50 |
+|  244462213 | CHK     |     93411 |        534.12 |
+|  244463194 | SAV     |      9372 |        767.77 |
+|  244463358 | CHK     |      9372 |       2237.97 |
+|  244466770 | CHK     |      9372 |        122.37 |
+|  244468276 | CD      |     93411 |      10000.00 |
+|  244472540 | CD      |      3348 |       5000.00 |
+|  244476237 | CHK     |      4349 |       3487.19 |
+|  244477695 | SAV     |      4797 |        387.99 |
+|  244482380 | CHK     |      7612 |        125.67 |
+|  244482964 | MM      |      8778 |       9345.55 |
+|  244484103 | SAV     |      8778 |       1500.00 |
+|  244487802 | BUS     |      2630 |       9345.55 |
+|  244488575 | CHK     |      1346 |      38552.05 |
+|  244490451 | SBL     |      1346 |      50000.00 |
+|  244490593 | CHK     |      2469 |       2258.02 |
+|  244490646 | SAV     |      3231 |        767.77 |
+|  244522777 | CHK     |      3344 |      23575.12 |
+|  244524021 | BUS     |      2630 |          0.00 |
+|  244555103 | CHK     |      3567 |       1500.00 |
+|  244555432 | CHK     |     93411 |      11200.00 |
+|  244566666 | CHK     |      4349 |       5500.00 |
+|  244777103 | CHK     |      3567 |      45000.00 |
++------------+---------+-----------+---------------+
+30 rows in set (0.00 sec)
+
+--------------
+/* Question 11: Use a subquery in the HAVING clause to find the employee
+responsible for opening the most accounts.*/
+SELECT open_emp_id, COUNT(*)
+FROM accounts
+GROUP BY open_emp_id
+HAVING COUNT(*) = (SELECT MAX(c) 
+				   FROM (SELECT open_emp_id, COUNT(*) AS c
+						 FROM accounts
+						 GROUP BY open_emp_id)
+                         AS emp_open_counts)
+--------------
+
++-------------+----------+
+| open_emp_id | COUNT(*) |
++-------------+----------+
+|   238345737 |        5 |
++-------------+----------+
+1 row in set (0.00 sec)
+
+--------------
+/* Question 12: Find all accounts opened by experienced teller employees
+who were hired before 2015 and are currently assigned to the Chicago branch.
+Join the ACCOUNTS table to subqueries against the BRANCH and EMPLOYEE tables.*/
+SELECT account_id, client_id, created, type_id
+FROM accounts a
+JOIN (SELECT * FROM branch WHERE branch_name='Chicago Branch') b
+ON (a.branch_id = b.branch_id)
+JOIN (SELECT * FROM employee WHERE start_date < '2015-01-01') e
+ON (a.open_emp_id = e.emp_id)
+--------------
+
++------------+-----------+------------+---------+
+| account_id | client_id | created    | type_id |
++------------+-----------+------------+---------+
+|  244454636 |      4345 | 2015-01-15 | CHK     |
+|  244456093 |      4345 | 2015-01-15 | SAV     |
++------------+-----------+------------+---------+
+2 rows in set (0.00 sec)
+
+mysql> notee

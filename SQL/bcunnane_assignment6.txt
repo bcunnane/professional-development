@@ -1,0 +1,467 @@
+mysql> source C:\Users\Brandon\Google Drive\cs\CS31A\6\bcunnane_assignment6.sql
+--------------
+/* Assignment6.sql 
+   BRANDON CUNNANE
+   CS 31A, Summer 2022
+*/
+
+/* Set Database. */
+USE bank
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+/*Question 1: Create a view named MAJOR_CLIENTS that consists of the client ID, first name,
+last name for every individual client. Write and execute the command to retrieve all the 
+information from the MAJOR_CLIENTS view. */
+CREATE OR REPLACE VIEW major_clients AS
+SELECT client_id, first_name, last_name
+FROM individual_client
+--------------
+
+Query OK, 0 rows affected (0.03 sec)
+
+--------------
+SELECT * FROM major_clients
+--------------
+
++-----------+------------+-----------+
+| client_id | first_name | last_name |
++-----------+------------+-----------+
+|      1346 | Giulia     | Spencer   |
+|      1514 | Smith      | Nolan     |
+|      1651 | Joe        | Evansr    |
+|      1888 | Nolan      | Corbett   |
+|      2343 | Eric       | Barrow    |
+|      2347 | Margaret   | Young     |
+|      2469 | Kyan       | Rubio     |
+|      3231 | Cory       | Goodwin   |
+|      3344 | Jason      | Evansr    |
+|      3348 | George     | Major     |
+|      4345 | Arnold     | Cross     |
+|      4349 | Reya       | Swanson   |
+|      4696 | Casey      | Makhi     |
+|      4797 | Jason      | Chen      |
+|      5346 | Ismae      | Howell    |
+|      6043 | Danny      | Fleming   |
+|      6347 | Cory       | Field     |
+|      6387 | Zaid       | Cross     |
+|      6539 | Jan        | Vincent   |
+|      7348 | Dani       | Leonard   |
+|      7612 | Billy      | Harmon    |
+|      7855 | Nicholas   | Aldo      |
+|      8349 | Cole       | Howell    |
+|      8778 | Richard    | Toby      |
+|      8789 | Maryam     | Blake     |
+|      9372 | Izabelle   | Rollins   |
+|     53411 | Richard    | Adele     |
+|     93411 | Richard    | Gentry    |
++-----------+------------+-----------+
+28 rows in set (0.01 sec)
+
+--------------
+/*Question 2: Create a view named SUPERVISOR_VW that generates the supervisor’s name and employee
+name. Write and execute the command to retrieve all the information from the SUPERVISOR_VW view*/
+CREATE OR REPLACE VIEW supervisor_vw AS
+SELECT CONCAT(m.first_name, ' ', m.last_name) AS superviser_name, 
+	   CONCAT(e.first_name, ' ', e.last_name) AS employee_name
+FROM employee e
+JOIN employee m ON (e.manager_id = m.emp_id)
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+--------------
+SELECT * FROM supervisor_vw
+--------------
+
++--------------------+--------------------+
+| superviser_name    | employee_name      |
++--------------------+--------------------+
+| Michael Smith      | Susan Barker       |
+| Susan Hawthorne    | Helen Fleming      |
+| Kenneth Martin     | Allen Kevin        |
+| Michael Smith      | Robert Tyler       |
+| Paula Parente      | Pirkko Koskitalo   |
+| Helen Fleming      | Chris Tucker       |
+| Allen Kevin        | Cynthia Ward       |
+| Ted Rooney         | Emil Kline         |
+| Kaisha Talley      | Varun Sanchez      |
+| Micheal Couch      | Livia Hall         |
+| Elizabeth Brown    | Filip Gates        |
+| Elizabeth Brown    | Diego Roel         |
+| Elizabeth Brown    | Diego Roel         |
+| Robert Tyler       | Susan Hawthorne    |
+| John Steel         | Fran Rovelli       |
+| Antonio Morenol    | Maria Anders       |
+| Gene Irving        | Randy Clarke       |
+| Chace Spence       | Allen Amin         |
+| Lianne Wrightn     | Samah Rasmussen    |
+| Alexande Kelly     | Sufyan Stevenson   |
+| Caspian Wells      | Avneet Andersen    |
+| Allen Kevin        | Terry Jones        |
+| Helen Fleming      | Sarah Parker       |
+| Susan Barker       | Alexander Peter    |
+| Helen Fleming      | Jane Grossman      |
+| Allen Kevin        | Marion Blake       |
+| Alexander Peter    | Ellen Abel         |
+| Kenneth Martin     | Paula Roberts      |
+| Paula Roberts      | Thomas Ziegler     |
+| Tommie Dougherty   | Shelly  Cannon     |
+| Edison Herbert     | Ted Rooney         |
+| Emil Kline         | Tommie Dougherty   |
+| Paula Roberts      | Samantha Jameson   |
+| Steve Monaghan     | Lianne Wrightn     |
+| Angel Ibsen        | Paula Wilson       |
+| Pirkko Koskitalo   | Angel Ibsen        |
+| Gregory Webb       | Caspian Wells      |
+| Antonio Morenol    | Christina Berglund |
+| Livia Hall         | Alexie Berglund    |
+| Randy Clarke       | Zackary Fuller     |
+| Daniel Tonini      | John Steel         |
+| Thomas Hardy       | Antonio Morenol    |
+| Patricio Simpson   | Elizabeth Brown    |
+| Simon Crowther     | Gene Irving        |
+| Patricio Simpson   | James Shelton      |
+| Faizan Murphy      | Chace Spence       |
+| Patricio Simpson   | Elizabeth Brown    |
+| Samuel Ellis       | Kaisha Talley      |
+| Adil Fischer       | Alexande Kelly     |
+| Eilish Reid        | Korey Abbott       |
+| Eilish Reid        | Vladimir Escobar   |
+| Tommie Dougherty   | Joel Franks        |
+| Samah Rasmussen    | Jed Ramsey         |
+| Alexie Berglund    | Hanna Ahmed        |
+| Avneet Andersen    | Clay  May          |
+| Sufyan Stevenson   | Jadon Mullen       |
+| Angel Ibsen        | Janete  Limeira    |
+| Christina Berglund | Hanna Moos         |
+| Zackary Fuller     | Yousaf  Cobb       |
+| Alexie Berglund    | Berti Shaw         |
+| Christina Berglund | Victoria Ashworthn |
+| Diego Roel         | Peter Franken      |
+| Diego Roel         | Zain  Mays         |
+| Varun Sanchez      | Oliver Paine       |
+| Diego Roel         | Peter Franken      |
+| Diego Roel         | iovanni Franken    |
+| Zackary Fuller     | Kya Cruz           |
+| Jed Ramsey         | Terry Bates        |
+| Jadon Mullen       | Umer Whitmore      |
+| Peter Franken      | Kai Smart          |
+| Oliver Paine       | Zayne Bennett      |
+| Peter Franken      | Carine FSchmitt    |
+| Peter Franken      | Carine FSchmitt    |
+| iovanni Franken    | Catherine Dewey    |
+| Clay  May          | Aamir Head         |
+| Matti Karttunen    | Paula Parente      |
+| Jed Ramsey         | Wesley Rahman      |
+| Jadon Mullen       | Georgie Sanchez    |
+| Peter Franken      | Sonny Ford         |
+| Oliver Paine       | Robert Penn        |
+| Peter Franken      | Yoshi Latimer      |
+| Peter Franken      | Yoshi Latimer      |
+| iovanni Franken    | Patricia  Cramer   |
+| Clay  May          | Toby Oliver        |
+| Antonio Morenol    | Eilish Reid        |
+| Micheal Couch      | Eren Battle        |
+| Susan Hawthorne    | John Gooding       |
+| Susan Hawthorne    | John Smith         |
++--------------------+--------------------+
+88 rows in set (0.00 sec)
+
+--------------
+/*Question 3: The bank president would like to have a report showing the branch name, location ID,
+city of each branch, and the total balance of all accounts opened at the branch. Create a view named
+BRANCH_SUMMARY_VW to generate the data. Write and execute the command to retrieve all the information
+from the BRANCH_SUMMARY_VW view.*/
+CREATE or REPLACE VIEW branch_summary_vw AS 
+SELECT branch_name, loc_id, city AS branch_city, SUM(avail_balance) AS total_balance
+FROM accounts a
+JOIN branch b ON (a.branch_id = b.branch_id)
+JOIN location l ON (b.loc_id = l.location_id)
+GROUP BY branch_name
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+--------------
+SELECT * FROM branch_summary_vw
+--------------
+
++----------------------+--------+---------------------+---------------+
+| branch_name          | loc_id | branch_city         | total_balance |
++----------------------+--------+---------------------+---------------+
+| Headquarter          |  10001 | San Francisco       |      73100.00 |
+| Saint Marks Branch   |  10001 | San Francisco       |       1500.00 |
+| Madison  Branch      |  10001 | San Francisco       |       1500.00 |
+| 36 Branch            |  10001 | San Francisco       |       1500.00 |
+| San Francisco Branch |  10001 | San Francisco       |      50000.00 |
+| Chicago Branch       |  13417 | Detroit             |       1557.75 |
+| Montgomery Branch    |  13417 | Detroit             |      50000.00 |
+| New York Branch      |  17093 | Boston              |      11758.02 |
+| Market Branch        |  46312 | South San Francisco |       3270.25 |
+| Madison Branch       |  56567 | Sacramento          |      24862.23 |
+| Michigan Branch      |  60064 | Chicago             |      13987.19 |
+| Jackson Branch       |  60064 | Chicago             |       9413.66 |
+| Howard Branch        |  60064 | Chicago             |       9345.55 |
+| Broadway Branch      |  60064 | Chicago             |      12000.00 |
+| Chestnut Branch      |  60185 | West Chicago        |     170998.51 |
++----------------------+--------+---------------------+---------------+
+15 rows in set (0.00 sec)
+
+--------------
+/*Question 4: Define a view named CLIENT_VW and mandate that all bank clients may use it to access
+clients data. Write and execute the command to retrieve all the information from the CLIENT_VW view.*/
+CREATE OR REPLACE VIEW client_vw AS
+SELECT client_id, CONCAT('ends in ', SUBSTRING(fed_id,-4,4)) AS fed_id, client_type_id, address, loc_id
+FROM clients
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+SELECT * FROM client_vw
+--------------
+
++-----------+--------------+----------------+-----------------------------------------------------+--------+
+| client_id | fed_id       | client_type_id | address                                             | loc_id |
++-----------+--------------+----------------+-----------------------------------------------------+--------+
+|      1346 | ends in 5555 | I              | 400 S Lynn White Dr                                 |  60185 |
+|      1514 | ends in 5555 | I              | 450 Park Avenue South                               |  17093 |
+|      1562 | ends in 1111 | B              | 74th & Mission Streets                              |  10001 |
+|      1635 | ends in 3333 | B              | 18 Madison Ave at 34th St.                          |  10001 |
+|      1651 | ends in 6666 | I              | 622 Embarcadero St                                  |  10001 |
+|      1888 | ends in 1111 | I              | 47 Mockingbird Ln                                   |  10001 |
+|      2343 | ends in 2222 | I              | 372 Clearwater Blvd                                 |  10001 |
+|      2347 | ends in 6666 | I              | 200 N Columbus Dr                                   |  17093 |
+|      2469 | ends in 2222 | I              | 88 Valencia Street                                  |  60185 |
+|      2563 | ends in 2222 | B              | 581 Webster St                                      |  10001 |
+|      2630 | ends in 8888 | B              | 5333 North Sheridan Road                            |  60185 |
+|      2703 | ends in 7777 | B              | 44 West 36th Street                                 |  60064 |
+|      3221 | ends in 5555 | B              | 181 West Madison Street                             |  56567 |
+|      3231 | ends in 9999 | I              | 32 West 45th Street                                 |  60185 |
+|      3344 | ends in 3333 | I              | 18 Jessup Rd                                        |  60185 |
+|      3348 | ends in 7777 | I              | 53 S Columbus Dr                                    |  60064 |
+|      3562 | ends in 5555 | B              | 7 Industrial Way                                    |  56567 |
+|      3563 | ends in 6666 | B              | 1334 N Lincoln Ave                                  |  60064 |
+|      3564 | ends in 3333 | B              | 2140 Union St                                       |  10001 |
+|      3566 | ends in 7777 | B              | 2741 West Montrose                                  |  60064 |
+|      3567 | ends in 8888 | B              | 2651 W. Peterson                                    |  60185 |
+|      4345 | ends in 4444 | I              | 12 Buchanan Ln                                      |  13417 |
+|      4349 | ends in 8888 | I              | 2220 W Chicago Ave                                  |  60064 |
+|      4565 | ends in 4444 | B              | West 38th Street                                    |  17093 |
+|      4696 | ends in 2222 | I              | 1550 N. Kingsbury                                   |  10001 |
+|      4797 | ends in 6666 | I              | 53 S Columbus Dr                                    |  60064 |
+|      5274 | ends in 6666 | B              | 1334 N Lincoln Ave                                  |  60064 |
+|      5346 | ends in 5555 | I              | 333 Harrison Street                                 |  10001 |
+|      5615 | ends in 4444 | B              | 836 West Wellington Avenue                          |  17093 |
+|      6043 | ends in 2222 | I              | 904 S. Lake Park Avenue                             |  13417 |
+|      6347 | ends in 6666 | I              | 34 Church Street                                    |  10001 |
+|      6387 | ends in 7777 | I              | 2552 N Clark Street                                 |  10001 |
+|      6539 | ends in 3333 | I              | 123 East 15 Street                                  |  46312 |
+|      7348 | ends in 7777 | I              | 4565 20th Street                                    |  46312 |
+|      7612 | ends in 7777 | I              | 19 West 40th Street                                 |  60064 |
+|      7855 | ends in 3333 | I              | 28 Folsom Street                                    |  10001 |
+|      8182 | ends in 1111 | B              | 845 United Nations Plaza (1st Avenue) & 48th Street |  10001 |
+|      8289 | ends in 2222 | B              | 10 W. Chicago Ave.                                  |  10001 |
+|      8349 | ends in 8888 | I              | 234 Harrison Street                                 |  10001 |
+|      8778 | ends in 8888 | I              | 12 Michigan Ave. & Roosevelt Road                   |  60064 |
+|      8789 | ends in 5555 | I              | 19 N. Milwaukee Ave.                                |  10001 |
+|      9372 | ends in 4444 | I              | 118 North Clark Street                              |  56567 |
+|     53411 | ends in 9999 | I              | 524 N Clark St                                      |  60064 |
+|     93411 | ends in 9999 | I              | 60 Pearl Street                                     |  56567 |
++-----------+--------------+----------------+-----------------------------------------------------+--------+
+44 rows in set (0.00 sec)
+
+--------------
+/*Question 5: Define a view named BUSINESS_CLIENT_VW that allows only business clients to be queried.
+Write and execute the command to retrieve all the information from the BUSINESS_CLIENT_VW view.*/
+CREATE OR REPLACE VIEW business_client_vw AS
+SELECT *
+FROM client_vw
+WHERE client_type_id = 'B'
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+--------------
+SELECT * FROM business_client_vw
+--------------
+
++-----------+--------------+----------------+-----------------------------------------------------+--------+
+| client_id | fed_id       | client_type_id | address                                             | loc_id |
++-----------+--------------+----------------+-----------------------------------------------------+--------+
+|      1562 | ends in 1111 | B              | 74th & Mission Streets                              |  10001 |
+|      1635 | ends in 3333 | B              | 18 Madison Ave at 34th St.                          |  10001 |
+|      2563 | ends in 2222 | B              | 581 Webster St                                      |  10001 |
+|      2630 | ends in 8888 | B              | 5333 North Sheridan Road                            |  60185 |
+|      2703 | ends in 7777 | B              | 44 West 36th Street                                 |  60064 |
+|      3221 | ends in 5555 | B              | 181 West Madison Street                             |  56567 |
+|      3562 | ends in 5555 | B              | 7 Industrial Way                                    |  56567 |
+|      3563 | ends in 6666 | B              | 1334 N Lincoln Ave                                  |  60064 |
+|      3564 | ends in 3333 | B              | 2140 Union St                                       |  10001 |
+|      3566 | ends in 7777 | B              | 2741 West Montrose                                  |  60064 |
+|      3567 | ends in 8888 | B              | 2651 W. Peterson                                    |  60185 |
+|      4565 | ends in 4444 | B              | West 38th Street                                    |  17093 |
+|      5274 | ends in 6666 | B              | 1334 N Lincoln Ave                                  |  60064 |
+|      5615 | ends in 4444 | B              | 836 West Wellington Avenue                          |  17093 |
+|      8182 | ends in 1111 | B              | 845 United Nations Plaza (1st Avenue) & 48th Street |  10001 |
+|      8289 | ends in 2222 | B              | 10 W. Chicago Ave.                                  |  10001 |
++-----------+--------------+----------------+-----------------------------------------------------+--------+
+16 rows in set (0.00 sec)
+
+--------------
+/*Question 6: Create a monthly report to show the number of employees, the total number of active accounts,
+and the total number of transactions for each branch. Define a view named BRANCH_ACTIVITY_VW that creates
+the report. Write and execute the command to retrieve all the information from the BRANCH_ACTIVITY_VW view.*/
+CREATE OR REPLACE VIEW branch_activity_vw AS
+SELECT branch_name, loc_id,
+COUNT(DISTINCT emp_id) AS num_employees,
+COUNT(DISTINCT account_id) AS num_active_accounts,
+COUNT(DISTINCT trans_id) AS tot_transactions
+FROM branch b
+LEFT JOIN employee e ON (b.branch_id = e.branch_id)
+LEFT JOIN account_trans t ON (b.branch_id = t.branch_id)
+GROUP BY branch_name
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+SELECT * FROM branch_activity_vw
+--------------
+
++----------------------+--------+---------------+---------------------+------------------+
+| branch_name          | loc_id | num_employees | num_active_accounts | tot_transactions |
++----------------------+--------+---------------+---------------------+------------------+
+| 36 Branch            |  10001 |             6 |                   0 |                0 |
+| Broadway Branch      |  60064 |             6 |                   0 |                0 |
+| Chestnut Branch      |  60185 |             6 |                   3 |                8 |
+| Chicago Branch       |  13417 |             6 |                   1 |                4 |
+| Franklin Branch      |  17093 |             0 |                   0 |                0 |
+| Headquarter          |  10001 |            12 |                   0 |                0 |
+| Howard Branch        |  60064 |             6 |                   0 |                0 |
+| Jackson Branch       |  60064 |             6 |                   1 |                2 |
+| Madison  Branch      |  10001 |             6 |                   0 |                0 |
+| Madison Branch       |  56567 |             6 |                   4 |                8 |
+| Market Branch        |  46312 |             6 |                   0 |                0 |
+| Michigan Branch      |  60064 |             6 |                   1 |                2 |
+| Montgomery Branch    |  13417 |            12 |                   0 |                0 |
+| New York Branch      |  17093 |             6 |                   1 |                2 |
+| Saint Marks Branch   |  10001 |             8 |                   0 |                0 |
+| San Francisco Branch |  10001 |             6 |                   0 |                0 |
++----------------------+--------+---------------+---------------------+------------------+
+16 rows in set (0.00 sec)
+
+--------------
+/*Question 7: If the ACCOUNT_TRANS table became large, the designers may decide to break it into two tables:
+(1) a TRANSACTION_CURRENT table which holds data up to six months ago, and (2) a TRANSACTION_HISTORY table
+which holds all data since the account was opened. If a client wants to see all transactions for a particular
+account, you need to query both tables. Create a view named TRANSACTION_VW that queries both tables and combines
+the results together. Write and execute the command to retrieve all the information from the ACCOUNT_TRANS view.*/
+CREATE OR REPLACE VIEW transaction_current AS
+SELECT *
+FROM account_trans
+WHERE trans_date > (SELECT DATE_SUB(MAX(trans_date), INTERVAL 6 MONTH) FROM account_trans)
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+--------------
+CREATE OR REPLACE VIEW transaction_history AS
+SELECT *
+FROM account_trans
+WHERE trans_date < (SELECT DATE_SUB(MAX(trans_date), INTERVAL 6 MONTH) FROM account_trans)
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+--------------
+CREATE OR REPLACE VIEW transaction_vw AS
+SELECT *
+FROM transaction_current
+
+UNION
+
+SELECT *
+FROM transaction_history
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+--------------
+SELECT * FROM transaction_vw
+--------------
+
++----------+---------------------+------------+------------+---------+-----------+-----------+---------------------+
+| trans_id | trans_date          | account_id | trans_type | amount  | teller_id | branch_id | avail_date          |
++----------+---------------------+------------+------------+---------+-----------+-----------+---------------------+
+|   288741 | 2018-11-25 00:00:00 |  244454636 | DBT        | 1000.00 | 236799948 |      1212 | 2018-11-27 00:00:00 |
+|   288743 | 2018-11-16 00:00:00 |  244462213 | DBT        | 4000.00 | 239961224 |      1717 | 2018-11-17 00:00:00 |
+|   288744 | 2018-11-15 00:00:00 |  244463194 | DBT        |  500.00 | 234564322 |      1717 | 2018-11-17 00:00:00 |
+|   288747 | 2018-11-15 00:00:00 |  244522777 | DBT        | 1000.00 | 239978944 |      1515 | 2018-11-18 00:00:00 |
+|   288749 | 2018-12-15 00:00:00 |  244476237 | DBT        | 2000.00 | 238234737 |      1313 | 2018-12-15 00:00:00 |
+|   288750 | 2018-11-15 00:00:00 |  244466770 | DBT        | 3000.00 | 239961224 |      1717 | 2018-11-16 00:00:00 |
+|   288868 | 2018-11-15 00:00:00 |  244777103 | DBT        | 2200.00 | 236456804 |      1515 | 2018-11-16 00:00:00 |
+|   288959 | 2018-11-15 00:00:00 |  244555103 | DBT        | 3200.00 | 239978944 |      1515 | 2018-11-16 00:00:00 |
+|   288730 | 2018-01-09 00:00:00 |  244454636 | DBT        |  100.00 | 236799948 |      1212 | 2018-01-14 00:00:00 |
+|   288731 | 2014-01-05 00:00:00 |  244457867 | DBT        | 1000.00 | 236345948 |      5551 | 2014-01-07 00:00:00 |
+|   288732 | 2018-01-06 00:00:00 |  244462213 | DBT        | 3000.00 | 239961224 |      1717 | 2018-01-07 00:00:00 |
+|   288733 | 2014-10-04 00:00:00 |  244463358 | DBT        |  100.00 | 234564322 |      1717 | 2014-10-05 00:00:00 |
+|   288734 | 2018-05-05 00:00:00 |  244463194 | DBT        |  100.00 | 234564322 |      1717 | 2018-05-07 00:00:00 |
+|   288735 | 2017-01-05 00:00:00 |  244454636 | DBT        |  100.00 | 236799948 |      1212 | 2017-01-05 00:00:00 |
+|   288736 | 2017-01-05 00:00:00 |  244555103 | DBT        |  100.00 | 239978944 |      1515 | 2017-01-07 00:00:00 |
+|   288737 | 2018-01-05 00:00:00 |  244522777 | DBT        |  100.00 | 239978944 |      1515 | 2018-01-08 00:00:00 |
+|   288738 | 2015-02-05 00:00:00 |  244482380 | DBT        |  200.00 | 231230948 |      1414 | 2018-02-05 00:00:00 |
+|   288739 | 2018-02-05 00:00:00 |  244476237 | DBT        |  200.00 | 238234737 |      1313 | 2018-02-05 00:00:00 |
+|   288740 | 2018-01-05 00:00:00 |  244466770 | DBT        |  300.00 | 239961224 |      1717 | 2018-01-06 00:00:00 |
+|   288742 | 2014-11-15 00:00:00 |  244457867 | DBT        | 2000.00 | 236345948 |      5551 | 2014-11-17 00:00:00 |
+|   288745 | 2017-11-15 00:00:00 |  244454636 | DBT        |  500.00 | 236799948 |      1212 | 2017-11-15 00:00:00 |
+|   288746 | 2017-11-15 00:00:00 |  244555103 | DBT        |  500.00 | 239978944 |      1515 | 2017-11-17 00:00:00 |
+|   288748 | 2015-12-15 00:00:00 |  244482380 | DBT        | 2000.00 | 231230948 |      1414 | 2018-12-15 00:00:00 |
+|   288778 | 2014-10-14 00:00:00 |  244463358 | DBT        |  500.00 | 234564322 |      1717 | 2014-10-15 00:00:00 |
+|   288888 | 2018-03-05 00:00:00 |  244777103 | DBT        | 1200.00 | 236456804 |      1515 | 2018-03-06 00:00:00 |
+|   288979 | 2018-03-05 00:00:00 |  244555103 | DBT        | 3000.00 | 239978944 |      1515 | 2018-03-06 00:00:00 |
++----------+---------------------+------------+------------+---------+-----------+-----------+---------------------+
+26 rows in set (0.00 sec)
+
+--------------
+/*Question 8: Create a view named BUSINESS_CLIENT_VW that joins the CLIENTS and BUSINESS_CLIENT tables so that
+all the data for business clients can be easily queried. Write and execute the command to retrieve all the
+information from the BUSINESS_CLIENT_VW view.*/
+CREATE OR REPLACE VIEW business_client_vw AS
+SELECT bc.client_id, bus_name, start_date, state_id, fed_id, address, loc_id, phone_number
+FROM business_client bc
+JOIN clients c ON (bc.client_id = c.client_id)
+--------------
+
+Query OK, 0 rows affected (0.02 sec)
+
+--------------
+SELECT * FROM business_client_vw
+--------------
+
++-----------+-------------------------+------------+------------+------------+-----------------------------------------------------+--------+--------------+
+| client_id | bus_name                | start_date | state_id   | fed_id     | address                                             | loc_id | phone_number |
++-----------+-------------------------+------------+------------+------------+-----------------------------------------------------+--------+--------------+
+|      1562 | Primary Engineering g   | 1995-05-01 | 12-345-678 | 04-1111111 | 74th & Mission Streets                              |  10001 | 307-458-2229 |
+|      1635 | Trusted Transport       | 2013-06-12 | 35-567-890 | 02-3333333 | 18 Madison Ave at 34th St.                          |  10001 | 582-400-0141 |
+|      2563 | Northeast Cooling Inc.  | 2011-01-01 | 23-456-789 | 04-2222222 | 581 Webster St                                      |  10001 | 419-653-7310 |
+|      2630 | Mega Computers          | 1999-05-01 | 67-678-901 | 03-8888888 | 5333 North Sheridan Road                            |  60185 | 409-917-1367 |
+|      2703 | Software Warehouse      | 2012-06-30 | 45-567-890 | 03-7777777 | 44 West 36th Street                                 |  60064 | 203-478-2081 |
+|      3221 | Engineering Design Co   | 1996-08-02 | 14-345-678 | 03-5555555 | 181 West Madison Street                             |  56567 | 321-530-3439 |
+|      3562 | Supreme Engineering     | 1996-06-01 | 12-345-678 | 05-5555555 | 7 Industrial Way                                    |  56567 | 240-944-5475 |
+|      3563 | Computer Buy Inc.       | 2012-01-01 | 23-456-789 | 05-6666666 | 1334 N Lincoln Ave                                  |  60064 | 208-896-1452 |
+|      3564 | Super Auto Body         | 2012-06-30 | 34-567-890 | 04-3333333 | 2140 Union St                                       |  10001 | 414-893-1069 |
+|      3566 | Recover Auto Body       | 2012-06-30 | 34-567-890 | 05-7777777 | 2741 West Montrose                                  |  60064 | 640-480-3955 |
+|      3567 | Compass Mortgage.       | 1999-05-01 | 45-678-901 | 05-8888888 | 2651 W. Peterson                                    |  60185 | 248-317-0745 |
+|      4565 | AAA Insurance Inc.      | 1999-05-01 | 45-678-901 | 04-4444444 | West 38th Street                                    |  17093 | 351-445-7934 |
+|      5274 | One Stop Shop Computers | 2015-07-05 | 25-456-789 | 03-6666666 | 1334 N Lincoln Ave                                  |  60064 | 309-685-3435 |
+|      5615 | Safe  Insurance Inc.    | 1999-07-02 | 67-678-901 | 02-4444444 | 836 West Wellington Avenue                          |  17093 | 205-710-7721 |
+|      8182 | Platinum Engineering    | 1996-06-01 | 13-345-678 | 02-1111111 | 845 United Nations Plaza (1st Avenue) & 48th Street |  10001 | 505-644-6262 |
+|      8289 | Safety Systems          | 2012-02-02 | 24-456-789 | 02-2222222 | 10 W. Chicago Ave.                                  |  10001 | 505-326-9062 |
++-----------+-------------------------+------------+------------+------------+-----------------------------------------------------+--------+--------------+
+16 rows in set (0.00 sec)
+
+mysql> notee
