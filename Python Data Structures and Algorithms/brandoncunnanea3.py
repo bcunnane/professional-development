@@ -2,6 +2,12 @@
 Brandon Cunnane
 CS C3 assignment 3
 Test driver
+
+Time complexity - O(n)
+The algorithm loops thorugh every character in the string
+
+Space complexity - O(n)
+The algorithm creates 4 additional variables and 1 data structure
 """
 
 from brandoncunnanestack import Stack
@@ -57,3 +63,24 @@ def test():
 
 if __name__ == '__main__':
     test()
+
+
+"""
+([|)]
+Error: unbalanced
+
+() (() [()])
+Balanced
+
+{{([][])}()}
+Balanced
+
+{2x+4}*[x^(3n) + x^(2n) + x^(n) + 17]
+Balanced
+
+]
+Error: unbalanced
+
+([)]
+Error: unbalanced
+"""
